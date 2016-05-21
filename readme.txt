@@ -3,7 +3,10 @@
 % CREATED BY:
 %      Billyoyo (Will)
 % Verion:
-%      1.0.0
+%      1.0.1
+%
+% Recent changes:
+%     * fixed the command-checking function as it was slightly broken before
 %
 
 Yoyobot's Readme!
