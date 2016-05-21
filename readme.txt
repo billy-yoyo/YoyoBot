@@ -77,6 +77,18 @@ Installation (for windows):
     isn't working and you followed the steps above this is likely the problem. If you don't use .py files for anything else, you can look up
     changing the file association for python (fairly simple), otherwise you're going to want to set up a script which runs run.py with python 3.4 specifically.
 
+LIST OF KNOWN PLUGINS:
+   http://pastebin.com/raw/DLWyW5Qy - !poll command to create polls, 
+      > !poll create option 1 or option 2 or ... - creates a poll with option 1, option 2, etc as the options
+      > !poll end - ends the current poll and shows the results
+      > !poll vote <option> - votes for an option
+      > !poll - shows the current options and their percentages
+   
+TO INSTALL:
+   !plugin install plugin_name pastebin_link
+e.g:
+   !plugin install poll http://pastebin.com/raw/DLWyW5Qy
+
 USAGE:
     !help [page]                                    - you already know this one, page numbers also work for all help pages in the same way
     !rng                                            - random number generator, do !rng help for usage
