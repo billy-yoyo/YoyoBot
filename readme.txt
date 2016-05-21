@@ -207,6 +207,8 @@ USAGE:
             >     %ic%string%ic% - removes all messages that contain string, not cast sensitive
             >     %nc%string%nc% - removes all messages that don't contain string, case sensitive
             >     %inc%string%inc% - removes all messages that don't contain string, not cast sensitive
+            >     %u%string%u% - removes all messages sent by a user who's name matches string not case sensitive
+            >     %nu%string%nu% - removes messages not sent by a user who's name matches string not case sensitive
             >
             > example rewards:
             >   discord::purge::.::100::%ic%bye%ic% %inc%hello%inc%  -  would remove all mesages that contain bye and don't contain hello
