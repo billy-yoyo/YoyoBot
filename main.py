@@ -2264,7 +2264,7 @@ def on_message(message):
                             for i in range(1, len(colls)):
                                 str_colls = str_colls + ", " + colls[i]
                             if not song_finished:
-                                song_list = get_songlist(colls)
+                                song_collection = colls
                                 sucess = True
                                 yield from client.send_message(message.channel, "<SONG> radio playlist changed to: " + str_colls)
                             else:
