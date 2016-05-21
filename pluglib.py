@@ -11,6 +11,11 @@ class PluginManager:
                     return plugin
         return None
 
+    def update_help(self):
+        list = self.plugin_list()
+        for plugin in list:
+            plugin.update_help()
+
     def uninstall(self, plugin_name):
         plugin = self.get_plugin(plugin_name)
         if plugin is not None:
@@ -23,17 +28,17 @@ class PluginManager:
     def plugin_list(self):
         plugins = []
         for event in self.plugins:
-            plugin = self.plugins[event]
-            if plugin not in plugins:
-                plugins.append(plugin)
+            for plugin in self.plugins[event]:
+                if plugin not in plugins:
+                    plugins.append(plugin)
         return plugins
 
     def plugin_name_list(self):
         plugins = []
         for event in self.plugins:
-            plugin = self.plugins[event]
-            if plugin.name not in plugins:
-                plugins.append(plugin.name)
+            for plugin in self.plugins[event]:
+                if plugin.name not in plugins:
+                    plugins.append(plugin.name)
         return plugins
 
     def register(self, plugin, events):
@@ -140,6 +145,9 @@ class Plugin:
         self.name = "NONE"
         self.file_name = file_name
         self.plugin_manager = plugin_manager
+
+    def update_help(self):
+        return
 
     def setup(self):
         return

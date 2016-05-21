@@ -79,19 +79,19 @@ help_help = [
     "   %c%history - shows who's been making yoyo say what (newest to oldest",
     "   %c%poke <user> - makes yoyo poke the use",
     "   %c%uptime - tells you how long yoyo's been alive for",
-    "   %c%song |%c%radio - song suggestions, do%c%song help for usage",
-    "   %c%flip |%c%coin - flips a coin",
+    "   %c%song - song suggestions, do%c%song help for usage",
+    "   %c%flip - flips a coin",
     "   %c%8ball [message] - magic 8 ball",
-    "   %c%dice |%c%die |%c%roll - rolls a 6-sided die",
+    "   %c%roll - rolls a 6-sided die",
     "   %c%nick <user|nickname> [nickname] - sets the users nickname (for tag), if only one parameter given user is you",
     "   %c%nickname [user] - tells you that user's nickname, if no user given it tells you your nickname",
     "   %c%tagged - functions for information about the tag-game (see%c%tag help)",
     "   %c%msg - lightweight email-type system, see%c%msg help for help",
     "   %c%invite - creates an invite to the channel (if yoyobot is allowed to)",
-    "   %c%hangman |%c%hman -%c%hangman to check progress,%c%hangman new [word] create new game, random word if none given,%c%hangman [letter|word] guess a word or a letter,%c%hangman end to give up",
+    "   %c%hman -%c%hangman to check progress,%c%hangman new [word] create new game, random word if none given,%c%hangman [letter|word] guess a word or a letter,%c%hangman end to give up",
     "   %c%activity - see%c%activity help for commands",
     "   %c%xkcd [number] - gives the xkcd comic corresponding to that number, chooses a random number if none given",
-    "   %c%cah |%c%c&h [number] - gives the cyanide and happiness comic corersponding to that number, chooses a random number if none given",
+    "   %c%cah [number] - gives the cyanide and happiness comic corersponding to that number, chooses a random number if none given",
     "   %c%humblebundle |%c%humble |%c%hb [bundle-suffix] - tells you what the current humble bundle is, with the suffix added to the end of the link if supplied",
     "   %c%img [number] - gets a random image from themetapicture",
     "   %c%code - links to a pastebin of my code",
@@ -143,9 +143,9 @@ plugin_help = [
     "%c%plugin usage:",
     "   %c%plugin install <plugin> <link> - installs a plugin under plugin name, link is a link to raw pastebin (automatically loads it)",
     "   %c%plugin uninstall <plugin> - uninstalls a plugin (automatically unloads it)",
-    "   %c%plugin update <plugin> - updates a plugin if it can (automatically reloads it)",
+    "   %c%plugin update <plugin> - updates a plugin if it can (requires bot restart to reload)",
     "   %c%plugin list - lists all the plugins currently loaded",
-    "   %c%plugin reload - reloads all the plugins completely",
+    "   %c%plugin reload - reloads all the plugins completely (only reloads their settings, updated code requires bot restart)",
     "   %c%plugin enable <plugin> - enabled the plugin",
     "   %c%plugin disable <plugin> - disabled the plugin (without uninstalling it)",
     "   %c%plugin check <plugin> - tells you whether the plugin is disabled or not"
@@ -201,7 +201,8 @@ settings = [
     "radio_update_rate=3",
     "command_prefix=!",
     "radio_channel=radio_channel",
-    "bot_name=yoyobot"
+    "bot_name=yoyobot",
+    "max_help_lines=5"
 ]
 
 def write_help_files():

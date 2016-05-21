@@ -38,14 +38,14 @@ global poke_cooldowns, uptime_cooldown, uptime_start, left_messages, hangman_wor
 global activity, activity_events, activity_cds, activity_triggers, yoyo_code_link, command_binds, custom_commands, settings, plugin_disables
 global permissions, command_swaps, user_roles, money_shop, user_money, ball_8, rewards
 global msg_history, tag_stats, nickname, nick_players, songs, collections, tagged, old_tagged, radio_channel, current_music_player
-global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames
+global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess
 
 def setup_variables():
     global poke_cooldowns, uptime_cooldown, uptime_start, left_messages, hangman_word, hangman_found, hangman_words, hangman_guessed_letters, hangman_tries
     global activity, activity_events, activity_cds, activity_triggers, yoyo_code_link, command_binds, custom_commands, settings, plugin_disables
     global permissions, command_swaps, user_roles, money_shop, user_money, ball_8, rewards
     global msg_history, tag_stats, nickname, nick_players, songs, collections, tagged, old_tagged, radio_channel, current_music_player
-    global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames
+    global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess
     poke_cooldowns = {}
     uptime_cooldown = 0
     uptime_start = None
@@ -138,7 +138,7 @@ def setup_variables():
     recent_songs = []
     skip_votes = []
     song_queue = []
-    song_paused = False
+    song_paused = True
 
 def load_plugin_disables():
     f = open("data/plugin_disables.txt", "r")
@@ -513,7 +513,8 @@ def load_help_strs():
     plugin_help_str = []
     load_help_str(plugin_help_str, "help/plugin.txt")
 
-
+    if plugin_manager is not None:
+        plugin_manager.update_help()
 
 class ShopItem:
     def __init__(self, reward, price, name, short_desc, long_desc, hidden=False):
@@ -1175,7 +1176,7 @@ def finish_song():
 def next_song():
     global song_list, current_music_player, voice_chn, radio_channel, song_finished, recent_songs, song_queue, song_paused
 
-    print(str(song_list))
+    #print(str(song_list))
     if len(song_list) > 0:
         if voice_chn is not None:
             song = None
@@ -1214,9 +1215,6 @@ def next_song():
         else:
             current_music_player = None
             song_list = []
-            print("failed")
-    else:
-        print("uber-failed")
 
 
 def start_radio(colls):
@@ -1307,6 +1305,11 @@ def remove_song(collection, songname):
                 f.write(song + "\n")
             f.close()
             return True
+        else:
+            print("couldn't find song: " + songname)
+            print(songs[collection])
+    else:
+        print("couldn't find collection: " + collection)
     return False
 
 
@@ -1346,7 +1349,7 @@ def load_songs():
         f = open("playlists/"+col + ".sng")
         for line in f:
             if line != "" and line != "\n":
-                songs[col].append(line)
+                songs[col].append(line.replace("\n", ""))
         f.close()
 
 
@@ -2202,8 +2205,7 @@ def on_message(message):
                         if remove_song(collection, songname):
                             yield from client.send_message(message.channel, "<SONG> removed song from " + collection)
                         else:
-                            yield from client.send_message(message.channel,
-                                                           "<SONG> could not find that song in " + collection)
+                            yield from client.send_message(message.channel, "<SONG> could not find that song in " + collection)
                         sucess = True
                 elif params[0] == "q" or params[0] == "queue":
                     if not check_command(message.author.name, "song queue", "song"):
@@ -3260,7 +3262,11 @@ def on_message(message):
                     if not check_command(message.author.name, "plugin reload", "plugin"):
                         yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
                     else:
-                        load_plugins()
+                        plugin_list = plugin_manager.plugin_name_list()
+                        for plugin in plugin_list:
+                            plugin_manager.uninstall(plugin)
+                            test = __import__("plugins."+plugin, fromlist=["plugins"])
+                            test.setup(plugin_manager, plugin)
                         yield from client.send_message(message.channel, "<PLUG> Reloaded plugins.")
                     sucess = True
                 elif params[0] == "help":
@@ -3619,8 +3625,8 @@ def on_message(message):
 @asyncio.coroutine
 def check_song(loop):
     while True:
-        global voice_chn, song_finished
-        if voice_chn is not None and song_finished:
+        global voice_chn, song_finished, song_paused
+        if voice_chn is not None and song_finished and not song_paused:
             yield from next_song()
         yield from asyncio.sleep(ruprt())
 
@@ -3649,13 +3655,15 @@ def on_ready():
     load_shop()
     load_binds()
     load_settings()
-    load_help_strs()
     load_custom_commands()
     load_plugin_disables()
     print("Loaded files")
     print('------')
     print("Loading plugins:")
     load_plugins()
+    print("Loading help files:")
+    load_help_strs()
+    print("done!")
 
     global uptime_start
     uptime_start = create_current_dat()
@@ -3684,7 +3692,7 @@ def run():
                 elif spl[0].lower() == "token":
                     token = "=".join(spl[1:])
             if username is not None and password is not None:
-                print("loaded usernamd and password...")
+                print("loaded username and password...")
                 client.run(username, password)
             elif token is not None:
                 print("loaded bot token...")
