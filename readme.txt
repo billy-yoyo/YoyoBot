@@ -58,8 +58,8 @@ Installation (for windows):
         pip install youtube_dl
         pip install requests
 
-    Now you're done with pip there's just one more thing left to install, ffmpeg. First download the package here:
-    https://ffmpeg.org/download.html
+    Now you're done with pip there's just one more thing left to install, ffmpeg. First download the package here: (click on your OS first)
+    https://ffmpeg.org/download.html (Here's a more direct link for windows: https://ffmpeg.zeranoe.com/builds/)
     Now extract it somewhere convenient (though it doesn't really matter)
     Now we need to add an environment variable for ffmpeg, so search for your system environment variable editor,
     Note how you do this may depend on your windows version so you may have to look up how to do it on yours if it doesn't seem to be working (I'm running win10)
