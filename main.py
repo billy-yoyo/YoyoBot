@@ -281,8 +281,8 @@ def is_command(msg, basename):
     if basename not in command_binds:
         set_bind(basename, basename)
     for bind in command_binds[basename]:
-        cmdstr = cfix() + bind + " "
-        if msg.startswith(cmdstr) or msg == cmdstr:
+        cmdstr = cfix() + bind
+        if msg.startswith(cmdstr + " ") or msg == cmdstr:
             return True
     return False
 
