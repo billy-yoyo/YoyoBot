@@ -31,8 +31,9 @@ Setting up a bot:
     Now click the convert to bot button in the application page, and keep your App Bot User Bot ID and Token. You'll need this when you run setup.py
 
 Installation (for windows):
-
+   
     Yoyobot runs on a few things, so I'll try and explain best how to get them.
+    First things first, yoyobot makes quite a lot of files and in general presumes it's in its own folder.
 
     Firstly, install Python 3.4: https://www.python.org/downloads/release/python-343/
     scroll down to the bottom and install the relevant one.
