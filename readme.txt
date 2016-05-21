@@ -65,10 +65,10 @@ Installation (for windows):
     then click on the environment variables in the bottom right hand corner, then double click on the User variable named PATH,
     then click the new button and paste the directory to your ffmpeg/bin/ folder, for example C:\Code\ffmpeg\bin, and click ok on the 3 windows you've opened.
 
-    Now you're done! As long as everything worked properly, you should be good to go now, just run setup.py once to create the files yoyo uses.
-    One last thing to note though, you want to make sure you're running main.py with python 3.4 if you have other versions installed, if it
+    Now you're done! As long as everything worked properly, you should be good to go now, just run run.py and follow the instructions to setup yoyo!
+    One last thing to note though, you want to make sure you're running run.py with python 3.4 if you have other versions installed, if it
     isn't working and you followed the steps above this is likely the problem. If you don't use .py files for anything else, you can look up
-    changing the file association for python (fairly simple), otherwise you're going to want to set up a script which runs main.py with python 3.4 specifically.
+    changing the file association for python (fairly simple), otherwise you're going to want to set up a script which runs run.py with python 3.4 specifically.
 
 USAGE:
     !help [page]                                    - you already know this one, page numbers also work for all help pages in the same way
