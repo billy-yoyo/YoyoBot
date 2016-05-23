@@ -3,13 +3,14 @@
 % CREATED BY:
 %      Billyoyo (Will)
 % Verion:
-%      1.0.2
+%      1.0.3
 %
 % Recent changes:
 %     * fixed the command-checking function as it was slightly broken before
 %     * plugins now get told when the help files are loaded or reloaded (so they can add they own help lines)
 %     * fixed !song delete function
 %     * fixed of the uber fail error
+%     * fixed the !role new command
 %
 
 Yoyobot's Readme!
