@@ -38,14 +38,14 @@ global poke_cooldowns, uptime_cooldown, uptime_start, left_messages, hangman_wor
 global activity, activity_events, activity_cds, activity_triggers, yoyo_code_link, command_binds, custom_commands, settings, plugin_disables
 global permissions, command_swaps, user_roles, money_shop, user_money, ball_8, rewards
 global msg_history, tag_stats, nickname, nick_players, songs, collections, tagged, old_tagged, radio_channel, current_music_player
-global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess
+global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess, song_volume
 
 def setup_variables():
     global poke_cooldowns, uptime_cooldown, uptime_start, left_messages, hangman_word, hangman_found, hangman_words, hangman_guessed_letters, hangman_tries
     global activity, activity_events, activity_cds, activity_triggers, yoyo_code_link, command_binds, custom_commands, settings, plugin_disables
     global permissions, command_swaps, user_roles, money_shop, user_money, ball_8, rewards
     global msg_history, tag_stats, nickname, nick_players, songs, collections, tagged, old_tagged, radio_channel, current_music_player
-    global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess
+    global voice_chn, song_list, song_collection, song_finished, recent_songs, skip_votes, song_queue, song_paused, nicknames, hangman_guess, song_volume
     poke_cooldowns = {}
     uptime_cooldown = 0
     uptime_start = None
@@ -139,6 +139,7 @@ def setup_variables():
     skip_votes = []
     song_queue = []
     song_paused = True
+    song_volume = 1
 
 def load_plugin_disables():
     f = open("data/plugin_disables.txt", "r")
@@ -393,7 +394,8 @@ def save_permissions():
 
 def create_permissions(rolename):
     if rolename not in permissions:
-        permissions[rolename] = Role(False, [], [])
+        permissions[rolename] = Role(rolename, False, [], [])
+        save_permissions()
         return True
     return False
 
@@ -1174,7 +1176,7 @@ def finish_song():
 
 
 def next_song():
-    global song_list, current_music_player, voice_chn, radio_channel, song_finished, recent_songs, song_queue, song_paused
+    global song_list, current_music_player, voice_chn, radio_channel, song_finished, recent_songs, song_queue, song_paused, song_volume
 
     #print(str(song_list))
     if len(song_list) > 0:
@@ -1193,6 +1195,7 @@ def next_song():
                     recent_songs.remove(recent_songs[0])
             if song is not None:
                 current_music_player = yield from voice_chn.create_ytdl_player(song, after=finish_song)
+                current_music_player.volume = song_volume
                 song_finished = False
                 song_paused = False
                 if radio_channel is not None:
@@ -1218,8 +1221,10 @@ def next_song():
 
 
 def start_radio(colls):
-    global song_list, voice_chn, song_collection
+    global song_list, voice_chn, song_collection, song_paused
     if voice_chn is not None:
+        song_finished = False
+        song_paused = False
         song_collection = colls
         song_list = get_songlist(colls)
         yield from next_song()
@@ -2175,7 +2180,7 @@ def on_message(message):
                 params = message.content[message.content.find(" ")+1:].split(" ")
             formatting = ": see "+cfix()+"song help"
             try:
-                global song_queue, voice_chn, song_finished, current_music_player, song_paused, skip_votes, song_list
+                global song_queue, voice_chn, song_finished, current_music_player, song_paused, skip_votes, song_list, song_collection, song_volume
                 if params[0] == "add":
                     if not check_command(message.author.name, "song add", "song"):
                         yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
@@ -2243,6 +2248,16 @@ def on_message(message):
                             sucess = True
                         else:
                             yield from client.send_message(message.channel, "<SONG> invalid page!")
+                elif params[0] == "volume":
+                    if not check_command(message.author.name, "song volume", "song"):
+                         yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
+                    else:
+                        if current_music_player is not None:
+                            song_volume = min(2, max(0, int(params[1]) / 100))
+                            current_music_player.volume = song_volume
+                            yield from client.send_message(message.channel, "<SONG> set volume to " + str(song_volume*100) + "%")
+                        else:
+                            yield from client.send_message(message.channel, "<SONG> Radio isn't currently on!")
                 elif params[0] == "radio":
                     if not check_command(message.author.name, "song radio", "song"):
                         yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
@@ -2724,6 +2739,21 @@ def on_message(message):
                         yield from client.send_message(message.channel, "<HELP> invalid page!")
             except():
                 yield from client.send_message(message.channel, "<HELP> you managed to break the help page.. how..")
+        elif is_command(message.content, "hanting"):
+            if not check_command(message.author.name, "hanting"):
+                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
+            else:
+                yield from client.send_message(message.channel, "Fuck him right?")
+        elif is_command(message.content, "mrxtripp"):
+            if not check_command(message.author.name, "mrxtripp"):
+                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
+            else:
+                yield from client.send_message(message.channel, "Uhhh.. who?")
+        elif is_command(message.content, "typhoonjimmy"):
+            if not check_command(message.author.name, "typhoonjimmy"):
+                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
+            else:
+                yield from client.send_message(message.channel, "I'm not going to fulfill your weird fantasies 😠 ")
         elif is_command(message.content, "status"):
             try:
                 if not check_command(message.author.name, "status"):
