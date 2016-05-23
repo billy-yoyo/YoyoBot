@@ -2739,21 +2739,6 @@ def on_message(message):
                         yield from client.send_message(message.channel, "<HELP> invalid page!")
             except():
                 yield from client.send_message(message.channel, "<HELP> you managed to break the help page.. how..")
-        elif is_command(message.content, "hanting"):
-            if not check_command(message.author.name, "hanting"):
-                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
-            else:
-                yield from client.send_message(message.channel, "Fuck him right?")
-        elif is_command(message.content, "mrxtripp"):
-            if not check_command(message.author.name, "mrxtripp"):
-                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
-            else:
-                yield from client.send_message(message.channel, "Uhhh.. who?")
-        elif is_command(message.content, "typhoonjimmy"):
-            if not check_command(message.author.name, "typhoonjimmy"):
-                yield from client.send_message(message.channel, "<ROLE> You don't have permission to use that command!")
-            else:
-                yield from client.send_message(message.channel, "I'm not going to fulfill your weird fantasies 😠 ")
         elif is_command(message.content, "status"):
             try:
                 if not check_command(message.author.name, "status"):
